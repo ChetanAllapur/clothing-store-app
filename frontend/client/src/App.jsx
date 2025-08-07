@@ -1,9 +1,24 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Navbar from './components/Navbar';
+// import ProductDetails from './pages/ProductDetails';
+// import Cart from './pages/Cart';
+// import Checkout from './pages/Checkout';
+// import OrderConfirmation from './pages/OrderConfirmation';
+// import NotFound from './pages/NotFound';
+
 function App() {
   return (
-    <div>
-      <h1>🛍️ Clothing Store App</h1>
-      <p>Frontend is ready!</p>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 }
 
