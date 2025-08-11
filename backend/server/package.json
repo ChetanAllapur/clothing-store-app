@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +19,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.5",
     "react-router-dom": "^7.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
