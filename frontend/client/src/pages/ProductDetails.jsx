@@ -1,73 +1,42 @@
-// src/pages/ProductDetails.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import "./ProductDetails.css";
+import { CartContext } from "../context/CartContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true);
-    setError(null);
-
-    fetch(`${API_URL}/api/products/${id}`, { signal: controller.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Server error: ${res.status}`);
-        return res.json();
-      })
-      .then((data) => setProduct(data))
-      .catch((err) => {
-        if (err.name === "AbortError") return; // fetch was cancelled
-        console.error("Error fetching product:", err);
-        setError(err.message || "Failed to fetch product details");
-      })
-      .finally(() => setLoading(false));
-
-    // cleanup to avoid state updates after unmount
-    return () => controller.abort();
+    async function fetchProduct() {
+      try {
+        const res = await fetch(`${API_URL}/api/products/${id}`);
+        if (!res.ok) throw new Error("Failed to fetch product");
+        const data = await res.json();
+        setProduct(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchProduct();
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="product-details">
-        <h2>Loading product details…</h2>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="product-details">
-        <h2>Failed to load product</h2>
-        <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Try again</button>
-      </div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <div className="product-details">
-        <h2>Product not found</h2>
-      </div>
-    );
-  }
+  if (!product) return <h2>Loading...</h2>;
 
   return (
-    <div className="product-details">
-      <img src={product.image} alt={product.name} />
-      <div className="details">
-        <h2>{product.name}</h2>
-        <p className="price">{product.price}</p>
-        <p>{product.description}</p>
-        <button>Add to Cart</button>
-      </div>
+    <div className="p-4 max-w-md mx-auto">
+      <h1 className="text-xl font-bold mb-2">{product.name}</h1>
+      <img src={product.image} alt={product.name} className="w-full h-64 object-cover mb-2 rounded" />
+      <p className="mb-2 font-semibold">₹{product.price}</p>
+      <p className="mb-4">{product.description}</p>
+      <button
+        onClick={() => addToCart(product)}
+        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+      >
+        Add to Cart
+      </button>
     </div>
   );
 }

@@ -33,3 +33,12 @@
 .link:hover {
   color: #f39c12;
 }
+
+.links .link {
+  margin-left: 16px;
+  position: relative;
+}
+
+.links .link:hover {
+  text-decoration: underline;
+}
