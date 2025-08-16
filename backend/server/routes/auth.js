@@ -3,24 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-
-// Middleware to protect routes
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    const token = authHeader.split(" ")[1];
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded; // contains { id: user._id }
-      next();
-    } catch (err) {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-  } else {
-    return res.status(401).json({ message: "No token provided" });
-  }
-};
+const protect = require("../middleware/authMiddleware"); // ✅ import centralized middleware
 
 // @route   POST /api/auth/register
 // @desc    Register user
@@ -82,9 +65,9 @@ router.post("/login", async (req, res) => {
 // @route   GET /api/auth/me
 // @desc    Get current user info
 // @access  Private
-router.get("/me", authMiddleware, async (req, res) => {
+router.get("/me", protect, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user._id).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (err) {

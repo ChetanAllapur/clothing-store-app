@@ -1,13 +1,16 @@
 .home {
-  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  text-align: center;
 }
 
 .hero {
-  text-align: center;
-  padding: 50px 20px;
-  background: linear-gradient(135deg, #f39c12, #e67e22);
-  color: white;
-  border-radius: 10px;
+  background: linear-gradient(135deg, #f6d365, #fda085);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 .hero h1 {
@@ -20,37 +23,15 @@
   margin-bottom: 20px;
 }
 
-.shop-now {
-  padding: 10px 20px;
-  background: white;
-  color: #e67e22;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.shop-now:hover {
-  background: #fceae2;
-}
-
-.featured {
-  margin-top: 40px;
-}
-
-.products {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-}
-
-.product-card {
-  flex: 1;
-  max-width: 200px;
-  padding: 20px;
-  border: 1px solid #ddd;
+.shop-btn {
+  background: #333;
+  color: white;
+  padding: 12px 24px;
   border-radius: 8px;
-  text-align: center;
-  background: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.shop-btn:hover {
+  background: #555;
 }
